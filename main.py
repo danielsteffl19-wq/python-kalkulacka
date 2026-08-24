@@ -1,9 +1,16 @@
 a = float(input("Zadej první číslo: "))
 b = float(input("Zadej druhé číslo: "))
 
-print("Součet:", a + b)
-print("Rozdíl:", a - b)
-print("Součin:", a * b)
-print("Podíl:", a / b)
+operace = input("Zadej operaci (+, -, *, /): ")
 
-print("Ahoj, worlde!")
+match operace:
+    case "+":
+        print("Součet:", a + b)
+    case "-":
+        print("Rozdíl:", a - b)
+    case "*":
+        print("Součin:", a * b)
+    case "/":
+        print("Podíl:", a / b)
+    case _:
+        print("Neplatná operace!")
