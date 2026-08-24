@@ -1,4 +1,5 @@
 from pathlib import Path
+import math
 
 
 HISTORY_FILE = Path(__file__).parent / "history.txt"
@@ -22,6 +23,16 @@ def vydel(a, b):
     return a / b
 
 
+def mocnina(a, b):
+    return math.pow(a, b)
+
+
+def odmocnina(a):
+    if a < 0:
+        return None
+    return math.sqrt(a)
+
+
 def nacti_historii():
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8") as soubor:
@@ -35,21 +46,29 @@ def uloz_vypocet(vypocet):
         soubor.write(vypocet + "\n")
 
 
+def nacti_cislo(text):
+    while True:
+        try:
+            return float(input(text))
+        except ValueError:
+            print("Neplatné číslo! Zkus to znovu.")
+
+
 historie = nacti_historii()
 
 
 while True:
-    try:
-        a = float(input("Zadej první číslo: "))
-        b = float(input("Zadej druhé číslo: "))
-    except ValueError:
-        print("Neplatné číslo! Zkus to znovu.")
-        continue
+    print("\n=== KALKULAČKA ===")
+    print("+  Sčítání")
+    print("-  Odčítání")
+    print("*  Násobení")
+    print("/  Dělení")
+    print("^  Mocnina")
+    print("r  Odmocnina")
+    print("h  Historie")
+    print("q  Konec")
 
-    operace = input(
-        "Zadej operaci (+, -, *, /, :) "
-        "nebo (h pro historii, q pro ukončení): "
-    )
+    operace = input("Vyber operaci: ").lower()
 
     match operace:
         case "q":
@@ -63,37 +82,83 @@ while True:
                 print("\n=== HISTORIE ===")
                 for vypocet in historie:
                     print(vypocet)
-                print()
 
         case "+":
+            a = nacti_cislo("Zadej první číslo: ")
+            b = nacti_cislo("Zadej druhé číslo: ")
+
             vysledek = secti(a, b)
             vypocet = f"{a} + {b} = {vysledek}"
+
             print("Výsledek:", vysledek)
+
             historie.append(vypocet)
             uloz_vypocet(vypocet)
 
         case "-":
+            a = nacti_cislo("Zadej první číslo: ")
+            b = nacti_cislo("Zadej druhé číslo: ")
+
             vysledek = odecti(a, b)
             vypocet = f"{a} - {b} = {vysledek}"
+
             print("Výsledek:", vysledek)
+
             historie.append(vypocet)
             uloz_vypocet(vypocet)
 
         case "*":
+            a = nacti_cislo("Zadej první číslo: ")
+            b = nacti_cislo("Zadej druhé číslo: ")
+
             vysledek = vynasob(a, b)
             vypocet = f"{a} * {b} = {vysledek}"
+
             print("Výsledek:", vysledek)
+
             historie.append(vypocet)
             uloz_vypocet(vypocet)
 
-        case "/" | ":":
+        case "/":
+            a = nacti_cislo("Zadej první číslo: ")
+            b = nacti_cislo("Zadej druhé číslo: ")
+
             vysledek = vydel(a, b)
 
             if vysledek is None:
                 print("Nelze dělit nulou!")
             else:
                 vypocet = f"{a} / {b} = {vysledek}"
+
                 print("Výsledek:", vysledek)
+
+                historie.append(vypocet)
+                uloz_vypocet(vypocet)
+
+        case "^":
+            a = nacti_cislo("Zadej základ: ")
+            b = nacti_cislo("Zadej exponent: ")
+
+            vysledek = mocnina(a, b)
+            vypocet = f"{a} ^ {b} = {vysledek}"
+
+            print("Výsledek:", vysledek)
+
+            historie.append(vypocet)
+            uloz_vypocet(vypocet)
+
+        case "r":
+            a = nacti_cislo("Zadej číslo: ")
+
+            vysledek = odmocnina(a)
+
+            if vysledek is None:
+                print("Nelze odmocnit záporné číslo!")
+            else:
+                vypocet = f"√{a} = {vysledek}"
+
+                print("Výsledek:", vysledek)
+
                 historie.append(vypocet)
                 uloz_vypocet(vypocet)
 
