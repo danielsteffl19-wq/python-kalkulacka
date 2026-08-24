@@ -54,7 +54,36 @@ def nacti_cislo(text):
             print("Neplatné číslo! Zkus to znovu.")
 
 
+def nacti_desetinna_mista():
+    while True:
+        try:
+            desetinna_mista = int(
+                input("Kolik desetinných míst chceš zobrazovat? ")
+            )
+
+            if desetinna_mista < 0:
+                print("Počet desetinných míst nemůže být záporný.")
+                continue
+
+            return desetinna_mista
+
+        except ValueError:
+            print("Zadej celé číslo.")
+
+
+def zpracuj_vysledek(vypocet, vysledek):
+    print("Výsledek:", vysledek)
+    historie.append(vypocet)
+    uloz_vypocet(vypocet)
+
+
+def zaokrouhli(vysledek):
+    return round(vysledek, desetinna_mista)
+
+
 historie = nacti_historii()
+
+desetinna_mista = 2
 
 
 while True:
@@ -66,6 +95,7 @@ while True:
     print("^  Mocnina")
     print("r  Odmocnina")
     print("h  Historie")
+    print("s  Nastavení")
     print("q  Konec")
 
     operace = input("Vyber operaci: ").lower()
@@ -80,44 +110,47 @@ while True:
                 print("Historie je prázdná.")
             else:
                 print("\n=== HISTORIE ===")
+
                 for vypocet in historie:
                     print(vypocet)
+
+        case "s":
+            print("\n=== NASTAVENÍ ===")
+            print(f"Aktuální počet desetinných míst: {desetinna_mista}")
+
+            desetinna_mista = nacti_desetinna_mista()
+
+            print(
+                f"Nastavení změněno na {desetinna_mista} "
+                "desetinných míst."
+            )
 
         case "+":
             a = nacti_cislo("Zadej první číslo: ")
             b = nacti_cislo("Zadej druhé číslo: ")
 
-            vysledek = secti(a, b)
+            vysledek = zaokrouhli(secti(a, b))
             vypocet = f"{a} + {b} = {vysledek}"
 
-            print("Výsledek:", vysledek)
-
-            historie.append(vypocet)
-            uloz_vypocet(vypocet)
+            zpracuj_vysledek(vypocet, vysledek)
 
         case "-":
             a = nacti_cislo("Zadej první číslo: ")
             b = nacti_cislo("Zadej druhé číslo: ")
 
-            vysledek = odecti(a, b)
+            vysledek = zaokrouhli(odecti(a, b))
             vypocet = f"{a} - {b} = {vysledek}"
 
-            print("Výsledek:", vysledek)
-
-            historie.append(vypocet)
-            uloz_vypocet(vypocet)
+            zpracuj_vysledek(vypocet, vysledek)
 
         case "*":
             a = nacti_cislo("Zadej první číslo: ")
             b = nacti_cislo("Zadej druhé číslo: ")
 
-            vysledek = vynasob(a, b)
+            vysledek = zaokrouhli(vynasob(a, b))
             vypocet = f"{a} * {b} = {vysledek}"
 
-            print("Výsledek:", vysledek)
-
-            historie.append(vypocet)
-            uloz_vypocet(vypocet)
+            zpracuj_vysledek(vypocet, vysledek)
 
         case "/":
             a = nacti_cislo("Zadej první číslo: ")
@@ -128,24 +161,19 @@ while True:
             if vysledek is None:
                 print("Nelze dělit nulou!")
             else:
+                vysledek = zaokrouhli(vysledek)
                 vypocet = f"{a} / {b} = {vysledek}"
 
-                print("Výsledek:", vysledek)
-
-                historie.append(vypocet)
-                uloz_vypocet(vypocet)
+                zpracuj_vysledek(vypocet, vysledek)
 
         case "^":
             a = nacti_cislo("Zadej základ: ")
             b = nacti_cislo("Zadej exponent: ")
 
-            vysledek = mocnina(a, b)
+            vysledek = zaokrouhli(mocnina(a, b))
             vypocet = f"{a} ^ {b} = {vysledek}"
 
-            print("Výsledek:", vysledek)
-
-            historie.append(vypocet)
-            uloz_vypocet(vypocet)
+            zpracuj_vysledek(vypocet, vysledek)
 
         case "r":
             a = nacti_cislo("Zadej číslo: ")
@@ -155,12 +183,10 @@ while True:
             if vysledek is None:
                 print("Nelze odmocnit záporné číslo!")
             else:
+                vysledek = zaokrouhli(vysledek)
                 vypocet = f"√{a} = {vysledek}"
 
-                print("Výsledek:", vysledek)
-
-                historie.append(vypocet)
-                uloz_vypocet(vypocet)
+                zpracuj_vysledek(vypocet, vysledek)
 
         case _:
             print("Neplatná operace!")
