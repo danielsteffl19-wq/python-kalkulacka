@@ -1,3 +1,9 @@
+from pathlib import Path
+
+
+HISTORY_FILE = Path(__file__).parent / "history.txt"
+
+
 def secti(a, b):
     return a + b
 
@@ -18,14 +24,14 @@ def vydel(a, b):
 
 def nacti_historii():
     try:
-        with open("history.txt", "r", encoding="utf-8") as soubor:
+        with open(HISTORY_FILE, "r", encoding="utf-8") as soubor:
             return [radek.strip() for radek in soubor]
     except FileNotFoundError:
         return []
 
 
 def uloz_vypocet(vypocet):
-    with open("history.txt", "a", encoding="utf-8") as soubor:
+    with open(HISTORY_FILE, "a", encoding="utf-8") as soubor:
         soubor.write(vypocet + "\n")
 
 
