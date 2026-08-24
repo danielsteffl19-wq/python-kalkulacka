@@ -16,7 +16,20 @@ def vydel(a, b):
     return a / b
 
 
-historie = []
+def nacti_historii():
+    try:
+        with open("history.txt", "r", encoding="utf-8") as soubor:
+            return [radek.strip() for radek in soubor]
+    except FileNotFoundError:
+        return []
+
+
+def uloz_vypocet(vypocet):
+    with open("history.txt", "a", encoding="utf-8") as soubor:
+        soubor.write(vypocet + "\n")
+
+
+historie = nacti_historii()
 
 
 while True:
@@ -48,18 +61,24 @@ while True:
 
         case "+":
             vysledek = secti(a, b)
+            vypocet = f"{a} + {b} = {vysledek}"
             print("Výsledek:", vysledek)
-            historie.append(f"{a} + {b} = {vysledek}")
+            historie.append(vypocet)
+            uloz_vypocet(vypocet)
 
         case "-":
             vysledek = odecti(a, b)
+            vypocet = f"{a} - {b} = {vysledek}"
             print("Výsledek:", vysledek)
-            historie.append(f"{a} - {b} = {vysledek}")
+            historie.append(vypocet)
+            uloz_vypocet(vypocet)
 
         case "*":
             vysledek = vynasob(a, b)
+            vypocet = f"{a} * {b} = {vysledek}"
             print("Výsledek:", vysledek)
-            historie.append(f"{a} * {b} = {vysledek}")
+            historie.append(vypocet)
+            uloz_vypocet(vypocet)
 
         case "/" | ":":
             vysledek = vydel(a, b)
@@ -67,8 +86,10 @@ while True:
             if vysledek is None:
                 print("Nelze dělit nulou!")
             else:
+                vypocet = f"{a} / {b} = {vysledek}"
                 print("Výsledek:", vysledek)
-                historie.append(f"{a} / {b} = {vysledek}")
+                historie.append(vypocet)
+                uloz_vypocet(vypocet)
 
         case _:
             print("Neplatná operace!")
