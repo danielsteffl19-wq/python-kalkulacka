@@ -16,6 +16,9 @@ def vydel(a, b):
     return a / b
 
 
+historie = []
+
+
 while True:
     try:
         a = float(input("Zadej první číslo: "))
@@ -25,7 +28,8 @@ while True:
         continue
 
     operace = input(
-        "Zadej operaci (+, -, *, /, :) nebo (q pro ukončení): "
+        "Zadej operaci (+, -, *, /, :) "
+        "nebo (h pro historii, q pro ukončení): "
     )
 
     match operace:
@@ -33,14 +37,29 @@ while True:
             print("Konec programu.")
             break
 
+        case "h":
+            if not historie:
+                print("Historie je prázdná.")
+            else:
+                print("\n=== HISTORIE ===")
+                for vypocet in historie:
+                    print(vypocet)
+                print()
+
         case "+":
-            print("Výsledek:", secti(a, b))
+            vysledek = secti(a, b)
+            print("Výsledek:", vysledek)
+            historie.append(f"{a} + {b} = {vysledek}")
 
         case "-":
-            print("Výsledek:", odecti(a, b))
+            vysledek = odecti(a, b)
+            print("Výsledek:", vysledek)
+            historie.append(f"{a} - {b} = {vysledek}")
 
         case "*":
-            print("Výsledek:", vynasob(a, b))
+            vysledek = vynasob(a, b)
+            print("Výsledek:", vysledek)
+            historie.append(f"{a} * {b} = {vysledek}")
 
         case "/" | ":":
             vysledek = vydel(a, b)
@@ -49,6 +68,7 @@ while True:
                 print("Nelze dělit nulou!")
             else:
                 print("Výsledek:", vysledek)
+                historie.append(f"{a} / {b} = {vysledek}")
 
         case _:
             print("Neplatná operace!")
