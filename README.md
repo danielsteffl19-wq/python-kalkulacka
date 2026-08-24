@@ -38,8 +38,7 @@ python-kalkulacka/
 ├── main.py              # hlavní program
 ├── history.txt          # historie výpočtů
 ├── config.json          # nastavení kalkulačky
-├── README.md            # základní informace o projektu
-└── DOCUMENTATION.md     # podrobná dokumentace
+└── README.md            # základní informace o projektu 
 ```
 
 ## Spuštění
