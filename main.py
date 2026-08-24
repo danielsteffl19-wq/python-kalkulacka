@@ -1,3 +1,21 @@
+def secti(a, b):
+    return a + b
+
+
+def odecti(a, b):
+    return a - b
+
+
+def vynasob(a, b):
+    return a * b
+
+
+def vydel(a, b):
+    if b == 0:
+        return None
+    return a / b
+
+
 while True:
     try:
         a = float(input("Zadej první číslo: "))
@@ -6,7 +24,9 @@ while True:
         print("Neplatné číslo! Zkus to znovu.")
         continue
 
-    operace = input("Zadej operaci (+, -, *, /, :) nebo (q pro ukončení): ")
+    operace = input(
+        "Zadej operaci (+, -, *, /, :) nebo (q pro ukončení): "
+    )
 
     match operace:
         case "q":
@@ -14,19 +34,21 @@ while True:
             break
 
         case "+":
-            print("Součet:", a + b)
+            print("Výsledek:", secti(a, b))
 
         case "-":
-            print("Rozdíl:", a - b)
+            print("Výsledek:", odecti(a, b))
 
         case "*":
-            print("Součin:", a * b)
+            print("Výsledek:", vynasob(a, b))
 
         case "/" | ":":
-            if b == 0:
+            vysledek = vydel(a, b)
+
+            if vysledek is None:
                 print("Nelze dělit nulou!")
             else:
-                print("Podíl:", a / b)
+                print("Výsledek:", vysledek)
 
         case _:
             print("Neplatná operace!")
