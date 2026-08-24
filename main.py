@@ -1,8 +1,10 @@
 from pathlib import Path
 import math
+import json
 
 
 HISTORY_FILE = Path(__file__).parent / "history.txt"
+CONFIG_FILE = Path(__file__).parent / "config.json"
 
 
 def secti(a, b):
@@ -71,6 +73,25 @@ def nacti_desetinna_mista():
             print("Zadej celé číslo.")
 
 
+def nacti_nastaveni():
+    try:
+        with open(CONFIG_FILE, "r", encoding="utf-8") as soubor:
+            nastaveni = json.load(soubor)
+            return nastaveni.get("desetinna_mista", 2)
+
+    except (FileNotFoundError, json.JSONDecodeError):
+        return 2
+
+
+def uloz_nastaveni(desetinna_mista):
+    nastaveni = {
+        "desetinna_mista": desetinna_mista
+    }
+
+    with open(CONFIG_FILE, "w", encoding="utf-8") as soubor:
+        json.dump(nastaveni, soubor, indent=4)
+
+
 def zpracuj_vysledek(vypocet, vysledek):
     print("Výsledek:", vysledek)
     historie.append(vypocet)
@@ -82,8 +103,7 @@ def zaokrouhli(vysledek):
 
 
 historie = nacti_historii()
-
-desetinna_mista = 2
+desetinna_mista = nacti_nastaveni()
 
 
 while True:
@@ -116,9 +136,13 @@ while True:
 
         case "s":
             print("\n=== NASTAVENÍ ===")
-            print(f"Aktuální počet desetinných míst: {desetinna_mista}")
+            print(
+                f"Aktuální počet desetinných míst: "
+                f"{desetinna_mista}"
+            )
 
             desetinna_mista = nacti_desetinna_mista()
+            uloz_nastaveni(desetinna_mista)
 
             print(
                 f"Nastavení změněno na {desetinna_mista} "
