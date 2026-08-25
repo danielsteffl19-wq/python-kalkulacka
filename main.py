@@ -1,164 +1,25 @@
-from pathlib import Path
+from matematika import (
+    secti,
+    odecti,
+    vynasob,
+    vydel,
+    cele_deleni,
+    zbytek,
+    mocnina,
+    odmocnina
+)
 
-import math
-import json
+from historie import (
+    nacti_historii,
+    uloz_vypocet,
+    smaz_historii
+)
 
-
-# ---- Soubory ----
-
-BASE_DIR = Path(__file__).parent
-HISTORY_FILE = BASE_DIR / "history.txt"
-CONFIG_FILE = BASE_DIR / "config.json"
-
-
-# ---- Matematika ----
-
-def secti(a, b):
-    return a + b
-
-
-def odecti(a, b):
-    return a - b
-
-
-def vynasob(a, b):
-    return a * b
-
-
-def vydel(a, b):
-    if b == 0:
-        return None
-    return a / b
-
-
-def cele_deleni(a, b):
-    if b == 0:
-        return None
-    return a // b
-
-
-def zbytek(a, b):
-    if b == 0:
-        return None
-    return a % b
-
-
-def mocnina(a, b):
-    return math.pow(a, b)
-
-
-def odmocnina(a):
-    if a < 0:
-        return None
-    return math.sqrt(a)
-
-
-# ---- Historie ----
-
-def nacti_historii():
-    try:
-        with open(HISTORY_FILE, "r", encoding="utf-8") as soubor:
-            return [radek.strip() for radek in soubor]
-    except FileNotFoundError:
-        return []
-
-
-def uloz_vypocet(vypocet):
-    with open(HISTORY_FILE, "a", encoding="utf-8") as soubor:
-        soubor.write(vypocet + "\n")
-
-
-def zobraz_historii():
-    if not historie:
-        print("Historie je prázdná.")
-        return
-
-    print("\n=== HISTORIE ===")
-
-    for vypocet in historie:
-        print(vypocet)
-
-
-def smaz_historii():
-    global historie
-
-    if not historie:
-        print("Historie je již prázdná.")
-        return
-
-    potvrzeni = input(
-        "Opravdu chceš vymazat celou historii? (a/n): "
-    ).lower()
-
-    if potvrzeni == "a":
-        historie.clear()
-
-        with open(HISTORY_FILE, "w", encoding="utf-8") as soubor:
-            soubor.write("")
-
-        print("Historie byla vymazána.")
-
-    else:
-        print("Mazání historie bylo zrušeno.")
-
-
-# ---- Nastavení ----
-
-def nacti_desetinna_mista():
-    while True:
-        try:
-            desetinna_mista = int(
-                input("Kolik desetinných míst chceš zobrazovat? ")
-            )
-
-            if desetinna_mista < 0:
-                print("Počet desetinných míst nemůže být záporný.")
-                continue
-
-            return desetinna_mista
-
-        except ValueError:
-            print("Zadej celé číslo.")
-
-
-def nacti_nastaveni():
-    try:
-        with open(CONFIG_FILE, "r", encoding="utf-8") as soubor:
-            nastaveni = json.load(soubor)
-
-            return nastaveni.get("desetinna_mista", 2)
-
-    except (FileNotFoundError, json.JSONDecodeError):
-        return 2
-
-
-def uloz_nastaveni(desetinna_mista):
-    nastaveni = {
-        "desetinna_mista": desetinna_mista
-    }
-
-    with open(CONFIG_FILE, "w", encoding="utf-8") as soubor:
-        json.dump(nastaveni, soubor, indent=4)
-
-
-def nastaveni():
-    global desetinna_mista
-
-    print("\n=== NASTAVENÍ ===")
-
-    print(
-        f"Aktuální počet desetinných míst: "
-        f"{desetinna_mista}"
-    )
-
-    desetinna_mista = nacti_desetinna_mista()
-
-    uloz_nastaveni(desetinna_mista)
-
-    print(
-        f"Nastavení změněno na {desetinna_mista} "
-        "desetinných míst."
-    )
+from nastaveni import (
+    nacti_desetinna_mista,
+    nacti_nastaveni,
+    uloz_nastaveni
+)
 
 
 # ---- Vstup a výsledky ----
@@ -186,6 +47,61 @@ def zpracuj_vysledek(vypocet, vysledek):
     historie.append(vypocet)
 
     uloz_vypocet(vypocet)
+
+
+# ---- Historie ----
+
+def zobraz_historii():
+    if not historie:
+        print("Historie je prázdná.")
+        return
+
+    print("\n=== HISTORIE ===")
+
+    for vypocet in historie:
+        print(vypocet)
+
+
+def vymaz_historii():
+    global historie
+
+    if not historie:
+        print("Historie je již prázdná.")
+        return
+
+    potvrzeni = input(
+        "Opravdu chceš vymazat celou historii? (a/n): "
+    ).lower()
+
+    if potvrzeni == "a":
+        historie.clear()
+        smaz_historii()
+        print("Historie byla vymazána.")
+
+    else:
+        print("Mazání historie bylo zrušeno.")
+
+
+# ---- Nastavení ----
+
+def nastaveni():
+    global desetinna_mista
+
+    print("\n=== NASTAVENÍ ===")
+
+    print(
+        f"Aktuální počet desetinných míst: "
+        f"{desetinna_mista}"
+    )
+
+    desetinna_mista = nacti_desetinna_mista()
+
+    uloz_nastaveni(desetinna_mista)
+
+    print(
+        f"Nastavení změněno na {desetinna_mista} "
+        "desetinných míst."
+    )
 
 
 # ---- Výpočty ----
@@ -270,7 +186,7 @@ while True:
             zobraz_historii()
 
         case "c":
-            smaz_historii()
+            vymaz_historii()
 
         case "s":
             nastaveni()
