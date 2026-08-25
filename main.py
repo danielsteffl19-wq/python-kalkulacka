@@ -3,10 +3,15 @@ from pathlib import Path
 import math
 import json
 
-BASE_DIR = Path(__file__).parent
 
+# ---- Soubory ----
+
+BASE_DIR = Path(__file__).parent
 HISTORY_FILE = BASE_DIR / "history.txt"
 CONFIG_FILE = BASE_DIR / "config.json"
+
+
+# ---- Matematika ----
 
 def secti(a, b):
     return a + b
@@ -23,8 +28,19 @@ def vynasob(a, b):
 def vydel(a, b):
     if b == 0:
         return None
-
     return a / b
+
+
+def cele_deleni(a, b):
+    if b == 0:
+        return None
+    return a // b
+
+
+def zbytek(a, b):
+    if b == 0:
+        return None
+    return a % b
 
 
 def mocnina(a, b):
@@ -34,14 +50,15 @@ def mocnina(a, b):
 def odmocnina(a):
     if a < 0:
         return None
-
     return math.sqrt(a)
+
+
+# ---- Historie ----
 
 def nacti_historii():
     try:
         with open(HISTORY_FILE, "r", encoding="utf-8") as soubor:
             return [radek.strip() for radek in soubor]
-
     except FileNotFoundError:
         return []
 
@@ -83,6 +100,9 @@ def smaz_historii():
 
     else:
         print("Mazání historie bylo zrušeno.")
+
+
+# ---- Nastavení ----
 
 def nacti_desetinna_mista():
     while True:
@@ -140,6 +160,9 @@ def nastaveni():
         "desetinných míst."
     )
 
+
+# ---- Vstup a výsledky ----
+
 def nacti_cislo(text):
     while True:
         try:
@@ -163,6 +186,9 @@ def zpracuj_vysledek(vypocet, vysledek):
     historie.append(vypocet)
 
     uloz_vypocet(vypocet)
+
+
+# ---- Výpočty ----
 
 def dvojita_operace(operace, symbol):
     a = nacti_cislo("Zadej první číslo: ")
@@ -203,18 +229,27 @@ def vypocitej_odmocninu():
 
     zpracuj_vysledek(vypocet, vysledek)
 
+
+# ---- Menu ----
+
 def zobraz_menu():
     print("\n=== KALKULAČKA ===")
-    print("+  Sčítání")
-    print("-  Odčítání")
-    print("*  Násobení")
-    print("/  Dělení")
-    print("^  Mocnina")
-    print("r  Odmocnina")
-    print("h  Historie")
-    print("c  Vymazat historii")
-    print("s  Nastavení")
-    print("q  Konec")
+
+    print("+   Sčítání")
+    print("-   Odčítání")
+    print("*   Násobení")
+    print("/   Dělení")
+    print("//  Celočíselné dělení")
+    print("%   Zbytek po dělení")
+    print("^   Mocnina")
+    print("r   Odmocnina")
+    print("h   Historie")
+    print("c   Vymazat historii")
+    print("s   Nastavení")
+    print("q   Konec")
+
+
+# ---- Hlavní program ----
 
 historie = nacti_historii()
 desetinna_mista = nacti_nastaveni()
@@ -251,6 +286,12 @@ while True:
 
         case "/":
             dvojita_operace(vydel, "/")
+
+        case "//":
+            dvojita_operace(cele_deleni, "//")
+
+        case "%":
+            dvojita_operace(zbytek, "%")
 
         case "^":
             vypocitej_mocninu()
