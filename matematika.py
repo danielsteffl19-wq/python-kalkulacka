@@ -34,10 +34,13 @@ def zbytek(a, b):
 
 
 def mocnina(a, b):
-    return math.pow(a, b)
-
+    try:
+        return math.pow(a, b)
+    except ValueError:
+        return None
 
 def odmocnina(a):
     if a < 0:
         return None
+
     return math.sqrt(a)

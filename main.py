@@ -102,10 +102,13 @@ def vypocitej_mocninu():
 
     vysledek = mocnina(a, b)
 
+    if vysledek is None:
+        print("Tuto mocninu nelze vypočítat.")
+        return
+
     vypocet = f"{a} ^ {b}"
 
     zpracuj_vysledek(vypocet, vysledek)
-
 
 def vypocitej_odmocninu():
     a = nacti_cislo("Zadej číslo: ")
