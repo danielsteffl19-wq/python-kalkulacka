@@ -33,23 +33,12 @@ def nacti_cislo(text):
             print("Neplatné číslo! Zkus to znovu.")
 
 
-def zaokrouhli(vysledek):
+def zaokrouhli(vysledek, desetinna_mista):
     return round(vysledek, desetinna_mista)
 
 
-def zpracuj_vysledek(vypocet, vysledek):
-    vysledek = formatuj_vysledek(vysledek)
-
-    print("Výsledek:", vysledek)
-
-    vypocet = f"{vypocet} = {vysledek}"
-
-    historie.append(vypocet)
-
-    uloz_vypocet(vypocet)
-
-def formatuj_vysledek(vysledek):
-    vysledek = round(vysledek, desetinna_mista)
+def formatuj_vysledek(vysledek, desetinna_mista):
+    vysledek = zaokrouhli(vysledek, desetinna_mista)
 
     if vysledek.is_integer():
         return int(vysledek)
@@ -57,9 +46,20 @@ def formatuj_vysledek(vysledek):
     return vysledek
 
 
-# ---- historie ----
+def zpracuj_vysledek(vypocet, vysledek, desetinna_mista, historie):
+    vysledek = formatuj_vysledek(vysledek, desetinna_mista)
 
-def vymaz_historii():
+    print("Výsledek:", vysledek)
+
+    vypocet = f"{vypocet} = {vysledek}"
+
+    historie.append(vypocet)
+    uloz_vypocet(vypocet)
+
+
+# ---- Historie ----
+
+def vymaz_historii(historie):
     if not historie:
         print("Historie je již prázdná.")
         return
@@ -78,9 +78,7 @@ def vymaz_historii():
 
 # ---- Nastavení ----
 
-def nastaveni():
-    global desetinna_mista
-
+def nastaveni(desetinna_mista):
     print("\n=== NASTAVENÍ ===")
 
     print(
@@ -97,25 +95,32 @@ def nastaveni():
         "desetinných míst."
     )
 
+    return desetinna_mista
+
 
 # ---- Výpočty ----
 
-def dvojita_operace(operace, symbol):
+def dvojita_operace(operace, symbol, desetinna_mista, historie):
     a = nacti_cislo("Zadej první číslo: ")
     b = nacti_cislo("Zadej druhé číslo: ")
 
     vysledek = operace(a, b)
 
     if vysledek is None:
-        print("Nelze dělit nulou!")
+        print("Operaci nelze provést!")
         return
 
     vypocet = f"{a} {symbol} {b}"
 
-    zpracuj_vysledek(vypocet, vysledek)
+    zpracuj_vysledek(
+        vypocet,
+        vysledek,
+        desetinna_mista,
+        historie
+    )
 
 
-def vypocitej_mocninu():
+def vypocitej_mocninu(desetinna_mista, historie):
     a = nacti_cislo("Zadej základ: ")
     b = nacti_cislo("Zadej exponent: ")
 
@@ -127,9 +132,15 @@ def vypocitej_mocninu():
 
     vypocet = f"{a} ^ {b}"
 
-    zpracuj_vysledek(vypocet, vysledek)
+    zpracuj_vysledek(
+        vypocet,
+        vysledek,
+        desetinna_mista,
+        historie
+    )
 
-def vypocitej_odmocninu():
+
+def vypocitej_odmocninu(desetinna_mista, historie):
     a = nacti_cislo("Zadej číslo: ")
 
     vysledek = odmocnina(a)
@@ -140,7 +151,12 @@ def vypocitej_odmocninu():
 
     vypocet = f"√{a}"
 
-    zpracuj_vysledek(vypocet, vysledek)
+    zpracuj_vysledek(
+        vypocet,
+        vysledek,
+        desetinna_mista,
+        historie
+    )
 
 
 # ---- Menu ----
@@ -164,54 +180,93 @@ def zobraz_menu():
 
 # ---- Hlavní program ----
 
-historie = nacti_historii()
-desetinna_mista = nacti_nastaveni()
+def main():
+    historie = nacti_historii()
+    desetinna_mista = nacti_nastaveni()
+
+    while True:
+        zobraz_menu()
+
+        operace = input("Vyber operaci: ").lower()
+
+        match operace:
+
+            case "q":
+                print("Konec programu.")
+                break
+
+            case "h":
+                sprava_historie(historie)
+
+            case "c":
+                vymaz_historii(historie)
+
+            case "s":
+                desetinna_mista = nastaveni(desetinna_mista)
+
+            case "+":
+                dvojita_operace(
+                    secti,
+                    "+",
+                    desetinna_mista,
+                    historie
+                )
+
+            case "-":
+                dvojita_operace(
+                    odecti,
+                    "-",
+                    desetinna_mista,
+                    historie
+                )
+
+            case "*":
+                dvojita_operace(
+                    vynasob,
+                    "*",
+                    desetinna_mista,
+                    historie
+                )
+
+            case "/":
+                dvojita_operace(
+                    vydel,
+                    "/",
+                    desetinna_mista,
+                    historie
+                )
+
+            case "//":
+                dvojita_operace(
+                    cele_deleni,
+                    "//",
+                    desetinna_mista,
+                    historie
+                )
+
+            case "%":
+                dvojita_operace(
+                    zbytek,
+                    "%",
+                    desetinna_mista,
+                    historie
+                )
+
+            case "^":
+                vypocitej_mocninu(
+                    desetinna_mista,
+                    historie
+                )
+
+            case "r":
+                vypocitej_odmocninu(
+                    desetinna_mista,
+                    historie
+                )
+
+            case _:
+                print("Neplatná operace!")
 
 
-while True:
-    zobraz_menu()
-
-    operace = input("Vyber operaci: ").lower()
-
-    match operace:
-
-        case "q":
-            print("Konec programu.")
-            break
-
-        case "h":
-            sprava_historie(historie)
-
-        case "c":
-            smaz_historii()
-            historie = nacti_historii()
-
-        case "s":
-            nastaveni()
-
-        case "+":
-            dvojita_operace(secti, "+")
-
-        case "-":
-            dvojita_operace(odecti, "-")
-
-        case "*":
-            dvojita_operace(vynasob, "*")
-
-        case "/":
-            dvojita_operace(vydel, "/")
-
-        case "//":
-            dvojita_operace(cele_deleni, "//")
-
-        case "%":
-            dvojita_operace(zbytek, "%")
-
-        case "^":
-            vypocitej_mocninu()
-
-        case "r":
-            vypocitej_odmocninu()
-
-        case _:
-            print("Neplatná operace!")
+if __name__ == "__main__":
+    main()
