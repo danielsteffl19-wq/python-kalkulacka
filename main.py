@@ -38,7 +38,7 @@ def zaokrouhli(vysledek):
 
 
 def zpracuj_vysledek(vypocet, vysledek):
-    vysledek = zaokrouhli(vysledek)
+    vysledek = formatuj_vysledek(vysledek)
 
     print("Výsledek:", vysledek)
 
@@ -47,6 +47,14 @@ def zpracuj_vysledek(vypocet, vysledek):
     historie.append(vypocet)
 
     uloz_vypocet(vypocet)
+
+def formatuj_vysledek(vysledek):
+    vysledek = round(vysledek, desetinna_mista)
+
+    if vysledek.is_integer():
+        return int(vysledek)
+
+    return vysledek
 
 
 # ---- Nastavení ----
