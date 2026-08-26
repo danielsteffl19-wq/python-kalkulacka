@@ -12,6 +12,7 @@ from matematika import (
 from historie import (
     nacti_historii,
     uloz_vypocet,
+    sprava_historie,
     smaz_historii
 )
 
@@ -28,7 +29,6 @@ def nacti_cislo(text):
     while True:
         try:
             return float(input(text))
-
         except ValueError:
             print("Neplatné číslo! Zkus to znovu.")
 
@@ -47,39 +47,6 @@ def zpracuj_vysledek(vypocet, vysledek):
     historie.append(vypocet)
 
     uloz_vypocet(vypocet)
-
-
-# ---- Historie ----
-
-def zobraz_historii():
-    if not historie:
-        print("Historie je prázdná.")
-        return
-
-    print("\n=== HISTORIE ===")
-
-    for vypocet in historie:
-        print(vypocet)
-
-
-def vymaz_historii():
-    global historie
-
-    if not historie:
-        print("Historie je již prázdná.")
-        return
-
-    potvrzeni = input(
-        "Opravdu chceš vymazat celou historii? (a/n): "
-    ).lower()
-
-    if potvrzeni == "a":
-        historie.clear()
-        smaz_historii()
-        print("Historie byla vymazána.")
-
-    else:
-        print("Mazání historie bylo zrušeno.")
 
 
 # ---- Nastavení ----
@@ -183,10 +150,11 @@ while True:
             break
 
         case "h":
-            zobraz_historii()
+            sprava_historie(historie)
 
         case "c":
-            vymaz_historii()
+            smaz_historii()
+            historie = nacti_historii()
 
         case "s":
             nastaveni()
