@@ -57,6 +57,25 @@ def formatuj_vysledek(vysledek):
     return vysledek
 
 
+# ---- historie ----
+
+def vymaz_historii():
+    if not historie:
+        print("Historie je již prázdná.")
+        return
+
+    potvrzeni = input(
+        "Opravdu chceš vymazat celou historii? (a/n): "
+    ).lower()
+
+    if potvrzeni == "a":
+        historie.clear()
+        smaz_historii()
+        print("Historie byla vymazána.")
+    else:
+        print("Mazání historie bylo zrušeno.")
+
+
 # ---- Nastavení ----
 
 def nastaveni():

@@ -17,8 +17,11 @@ def nacti_historii():
 # ---- Uložení výpočtu ----
 
 def uloz_vypocet(vypocet):
-    with open(HISTORY_FILE, "a", encoding="utf-8") as soubor:
-        soubor.write(vypocet + "\n")
+    try:
+        with open(HISTORY_FILE, "a", encoding="utf-8") as soubor:
+            soubor.write(vypocet + "\n")
+    except OSError:
+        print("Historii se nepodařilo uložit.")
 
 
 # ---- Zobrazení historie ----
@@ -92,21 +95,8 @@ def sprava_historie(historie):
 # ---- Vymazání historie ----
 
 def smaz_historii():
-    with open(HISTORY_FILE, "w", encoding="utf-8") as soubor:
-        soubor.write("")
-
-def vymaz_historii():
-    if not historie:
-        print("Historie je již prázdná.")
-        return
-
-    potvrzeni = input(
-        "Opravdu chceš vymazat celou historii? (a/n): "
-    ).lower()
-
-    if potvrzeni == "a":
-        historie.clear()
-        smaz_historii()
-        print("Historie byla vymazána.")
-    else:
-        print("Mazání historie bylo zrušeno.")
+    try:
+        with open(HISTORY_FILE, "w", encoding="utf-8") as soubor:
+            soubor.write("")
+    except OSError:
+        print("Historii se nepodařilo vymazat.")
