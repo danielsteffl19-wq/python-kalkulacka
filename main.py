@@ -25,6 +25,14 @@ from nastaveni import (
     uloz_nastaveni
 )
 
+zakladni_operace = {
+    "+": secti,
+    "-": odecti,
+    "*": vynasob,
+    "/": vydel,
+    "//": cele_deleni,
+    "%": zbytek
+}
 
 # ---- Vstup a výsledky ----
 
@@ -249,6 +257,15 @@ def main():
 
         operace = input("Vyber operaci: ").lower()
 
+        if operace in zakladni_operace:
+            dvojita_operace(
+                zakladni_operace[operace],
+                operace,
+                desetinna_mista,
+                historie
+            )
+            continue
+
         match operace:
 
             case "q":
@@ -264,53 +281,6 @@ def main():
             case "s":
                 desetinna_mista = nastaveni(desetinna_mista)
 
-            case "+":
-                dvojita_operace(
-                    secti,
-                    "+",
-                    desetinna_mista,
-                    historie
-                )
-
-            case "-":
-                dvojita_operace(
-                    odecti,
-                    "-",
-                    desetinna_mista,
-                    historie
-                )
-
-            case "*":
-                dvojita_operace(
-                    vynasob,
-                    "*",
-                    desetinna_mista,
-                    historie
-                )
-
-            case "/":
-                dvojita_operace(
-                    vydel,
-                    "/",
-                    desetinna_mista,
-                    historie
-                )
-
-            case "//":
-                dvojita_operace(
-                    cele_deleni,
-                    "//",
-                    desetinna_mista,
-                    historie
-                )
-
-            case "%":
-                dvojita_operace(
-                    zbytek,
-                    "%",
-                    desetinna_mista,
-                    historie
-                )
 
             case "^":
                 vypocitej_mocninu(
