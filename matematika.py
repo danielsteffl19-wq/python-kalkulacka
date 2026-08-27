@@ -44,3 +44,9 @@ def odmocnina(a):
         return None
 
     return math.sqrt(a)
+
+def faktorial(a):
+    if a < 0 or not a.is_integer():
+        return None
+
+    return math.factorial(int(a))

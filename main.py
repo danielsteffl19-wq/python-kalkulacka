@@ -6,7 +6,8 @@ from matematika import (
     cele_deleni,
     zbytek,
     mocnina,
-    odmocnina
+    odmocnina,
+    faktorial
 )
 
 from historie import (
@@ -158,6 +159,24 @@ def vypocitej_odmocninu(desetinna_mista, historie):
         historie
     )
 
+def vypocitej_faktorial(desetinna_mista, historie):
+    a = nacti_cislo("Zadej číslo: ")
+
+    vysledek = faktorial(a)
+
+    if vysledek is None:
+        print("Faktoriál lze vypočítat pouze z nezáporného celého čísla.")
+        return
+
+    vypocet = f"{a}!"
+
+    zpracuj_vysledek(
+        vypocet,
+        vysledek,
+        desetinna_mista,
+        historie
+    )
+
 
 # ---- Menu ----
 
@@ -172,6 +191,7 @@ def zobraz_menu():
     print("%   Zbytek po dělení")
     print("^   Mocnina")
     print("r   Odmocnina")
+    print("!   Faktoriál")
     print("h   Historie")
     print("c   Vymazat historii")
     print("s   Nastavení")
@@ -260,6 +280,11 @@ def main():
 
             case "r":
                 vypocitej_odmocninu(
+                    desetinna_mista,
+                    historie
+                )
+            case "!":
+                vypocitej_faktorial(
                     desetinna_mista,
                     historie
                 )
