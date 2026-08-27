@@ -107,10 +107,10 @@ def dvojita_operace(operace, symbol, desetinna_mista, historie):
     a = nacti_cislo("Zadej první číslo: ")
     b = nacti_cislo("Zadej druhé číslo: ")
 
-    vysledek = operace(a, b)
-
-    if vysledek is None:
-        print("Operaci nelze provést!")
+    try:
+        vysledek = operace(a, b)
+    except ValueError as chyba:
+        print(chyba)
         return
 
     vypocet = f"{a} {symbol} {b}"
@@ -127,10 +127,10 @@ def vypocitej_mocninu(desetinna_mista, historie):
     a = nacti_cislo("Zadej základ: ")
     b = nacti_cislo("Zadej exponent: ")
 
-    vysledek = mocnina(a, b)
-
-    if vysledek is None:
-        print("Tuto mocninu nelze vypočítat.")
+    try:
+        vysledek = mocnina(a, b)
+    except ValueError as chyba:
+        print(chyba)
         return
 
     vypocet = f"{a} ^ {b}"
@@ -146,10 +146,10 @@ def vypocitej_mocninu(desetinna_mista, historie):
 def vypocitej_odmocninu(desetinna_mista, historie):
     a = nacti_cislo("Zadej číslo: ")
 
-    vysledek = odmocnina(a)
-
-    if vysledek is None:
-        print("Nelze odmocnit záporné číslo!")
+    try:
+        vysledek = odmocnina(a)
+    except ValueError as chyba:
+        print(chyba)
         return
 
     vypocet = f"√{a}"
@@ -161,13 +161,14 @@ def vypocitej_odmocninu(desetinna_mista, historie):
         historie
     )
 
+
 def vypocitej_faktorial(desetinna_mista, historie):
     a = nacti_cislo("Zadej číslo: ")
 
-    vysledek = faktorial(a)
-
-    if vysledek is None:
-        print("Faktoriál lze vypočítat pouze z nezáporného celého čísla.")
+    try:
+        vysledek = faktorial(a)
+    except ValueError as chyba:
+        print(chyba)
         return
 
     vypocet = f"{a}!"
@@ -178,6 +179,7 @@ def vypocitej_faktorial(desetinna_mista, historie):
         desetinna_mista,
         historie
     )
+
 
 def vypocitej_absolutni_hodnotu(desetinna_mista, historie):
     a = nacti_cislo("Zadej číslo: ")
@@ -193,14 +195,15 @@ def vypocitej_absolutni_hodnotu(desetinna_mista, historie):
         historie
     )
 
+
 def vypocitej_logaritmus(desetinna_mista, historie):
     a = nacti_cislo("Zadej číslo: ")
     zaklad = nacti_cislo("Zadej základ: ")
 
-    vysledek = logaritmus(a, zaklad)
-
-    if vysledek is None:
-        print("Logaritmus nelze pro zadané hodnoty vypočítat.")
+    try:
+        vysledek = logaritmus(a, zaklad)
+    except ValueError as chyba:
+        print(chyba)
         return
 
     vypocet = f"log_{zaklad}({a})"
@@ -211,6 +214,7 @@ def vypocitej_logaritmus(desetinna_mista, historie):
         desetinna_mista,
         historie
     )
+
 
 # ---- Menu ----
 
