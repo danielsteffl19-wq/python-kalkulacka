@@ -25,14 +25,6 @@ from nastaveni import (
     uloz_nastaveni
 )
 
-zakladni_operace = {
-    "+": secti,
-    "-": odecti,
-    "*": vynasob,
-    "/": vydel,
-    "//": cele_deleni,
-    "%": zbytek
-}
 
 # ---- Vstup a výsledky ----
 
@@ -224,6 +216,27 @@ def vypocitej_logaritmus(desetinna_mista, historie):
     )
 
 
+# ---- Operace ----
+
+zakladni_operace = {
+    "+": secti,
+    "-": odecti,
+    "*": vynasob,
+    "/": vydel,
+    "//": cele_deleni,
+    "%": zbytek
+}
+
+
+specialni_operace = {
+    "^": vypocitej_mocninu,
+    "r": vypocitej_odmocninu,
+    "!": vypocitej_faktorial,
+    "|x|": vypocitej_absolutni_hodnotu,
+    "l": vypocitej_logaritmus
+}
+
+
 # ---- Menu ----
 
 def zobraz_menu():
@@ -261,6 +274,13 @@ def main():
             dvojita_operace(
                 zakladni_operace[operace],
                 operace,
+                desetinna_mista,
+                historie
+            )
+            continue
+
+        if operace in specialni_operace:
+            specialni_operace[operace](
                 desetinna_mista,
                 historie
             )
