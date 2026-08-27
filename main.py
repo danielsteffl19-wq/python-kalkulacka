@@ -8,7 +8,8 @@ from matematika import (
     mocnina,
     odmocnina,
     faktorial,
-    absolutni_hodnota
+    absolutni_hodnota,
+    logaritmus
 )
 
 from historie import (
@@ -192,6 +193,24 @@ def vypocitej_absolutni_hodnotu(desetinna_mista, historie):
         historie
     )
 
+def vypocitej_logaritmus(desetinna_mista, historie):
+    a = nacti_cislo("Zadej číslo: ")
+    zaklad = nacti_cislo("Zadej základ: ")
+
+    vysledek = logaritmus(a, zaklad)
+
+    if vysledek is None:
+        print("Logaritmus nelze pro zadané hodnoty vypočítat.")
+        return
+
+    vypocet = f"log_{zaklad}({a})"
+
+    zpracuj_vysledek(
+        vypocet,
+        vysledek,
+        desetinna_mista,
+        historie
+    )
 
 # ---- Menu ----
 
@@ -208,6 +227,7 @@ def zobraz_menu():
     print("r   Odmocnina")
     print("!   Faktoriál")
     print("|x|  Absolutní hodnota")
+    print("l   Logaritmus\n")
     print("h   Historie")
     print("c   Vymazat historii")
     print("s   Nastavení")
@@ -299,6 +319,7 @@ def main():
                     desetinna_mista,
                     historie
                 )
+            
             case "!":
                 vypocitej_faktorial(
                     desetinna_mista,
@@ -307,6 +328,12 @@ def main():
 
             case "|x|":
                 vypocitej_absolutni_hodnotu(
+                    desetinna_mista,
+                    historie
+                )
+            
+            case "l":
+                vypocitej_logaritmus(
                     desetinna_mista,
                     historie
                 )

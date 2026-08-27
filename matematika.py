@@ -53,3 +53,9 @@ def faktorial(a):
 
 def absolutni_hodnota(a):
     return abs(a)
+
+def logaritmus(a, zaklad):
+    if a <= 0 or zaklad <= 0 or zaklad == 1:
+        return None
+
+    return math.log(a, zaklad)
