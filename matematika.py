@@ -50,3 +50,6 @@ def faktorial(a):
         return None
 
     return math.factorial(int(a))
+
+def absolutni_hodnota(a):
+    return abs(a)

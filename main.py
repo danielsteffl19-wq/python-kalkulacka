@@ -7,7 +7,8 @@ from matematika import (
     zbytek,
     mocnina,
     odmocnina,
-    faktorial
+    faktorial,
+    absolutni_hodnota
 )
 
 from historie import (
@@ -177,6 +178,20 @@ def vypocitej_faktorial(desetinna_mista, historie):
         historie
     )
 
+def vypocitej_absolutni_hodnotu(desetinna_mista, historie):
+    a = nacti_cislo("Zadej číslo: ")
+
+    vysledek = absolutni_hodnota(a)
+
+    vypocet = f"|{a}|"
+
+    zpracuj_vysledek(
+        vypocet,
+        vysledek,
+        desetinna_mista,
+        historie
+    )
+
 
 # ---- Menu ----
 
@@ -192,6 +207,7 @@ def zobraz_menu():
     print("^   Mocnina")
     print("r   Odmocnina")
     print("!   Faktoriál")
+    print("|x|  Absolutní hodnota")
     print("h   Historie")
     print("c   Vymazat historii")
     print("s   Nastavení")
@@ -285,6 +301,12 @@ def main():
                 )
             case "!":
                 vypocitej_faktorial(
+                    desetinna_mista,
+                    historie
+                )
+
+            case "|x|":
+                vypocitej_absolutni_hodnotu(
                     desetinna_mista,
                     historie
                 )
