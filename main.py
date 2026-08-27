@@ -301,37 +301,6 @@ def main():
             case "s":
                 desetinna_mista = nastaveni(desetinna_mista)
 
-
-            case "^":
-                vypocitej_mocninu(
-                    desetinna_mista,
-                    historie
-                )
-
-            case "r":
-                vypocitej_odmocninu(
-                    desetinna_mista,
-                    historie
-                )
-            
-            case "!":
-                vypocitej_faktorial(
-                    desetinna_mista,
-                    historie
-                )
-
-            case "|x|":
-                vypocitej_absolutni_hodnotu(
-                    desetinna_mista,
-                    historie
-                )
-            
-            case "l":
-                vypocitej_logaritmus(
-                    desetinna_mista,
-                    historie
-                )
-
             case _:
                 print("Neplatná operace!")
 
