@@ -1,5 +1,7 @@
 import tkinter as tk
 
+# ---- Importy ----
+
 from matematika import (
     secti, odecti, vynasob, vydel, cele_deleni, zbytek,
     mocnina, odmocnina, faktorial, absolutni_hodnota, logaritmus
@@ -12,7 +14,10 @@ from historie import (
 from nastaveni import nacti_nastaveni, uloz_nastaveni
 
 
+# ---- Třída Kalkulačka ----
+
 class Kalkulacka:
+    # ---- Inicializace ----
     def __init__(self, okno):
         self.okno = okno
         self.prvni_cislo = None
@@ -25,7 +30,7 @@ class Kalkulacka:
         self.okno.geometry("350x530")
         self.okno.resizable(False, False)
 
-        # Horní lišta pro mini tlačítko historie
+        # Horní lišta pro mini tlačítko historie a nastaveni
         self.horni_lista = tk.Frame(self.okno)
         self.horni_lista.pack(fill="x", padx=20, pady=(10, 0))
 
@@ -67,6 +72,7 @@ class Kalkulacka:
 
         self.vytvorit_tlacitka()
 
+    # ---- Tlačítka ----
     def vytvorit_tlacitka(self):
         tlacitka = [
             [("7", lambda: self.pridat_cislo("7")), ("8", lambda: self.pridat_cislo("8")), ("9", lambda: self.pridat_cislo("9")), ("/", lambda: self.zvolit_operaci("/"))],
@@ -92,6 +98,7 @@ class Kalkulacka:
         for i in range(6):
             self.ramecek_tlacitka.rowconfigure(i, weight=1)
 
+    # ---- Vstup ----
     def pridat_cislo(self, cislo):
         self.displej.insert(tk.END, cislo)
 
@@ -115,6 +122,7 @@ class Kalkulacka:
         except ValueError:
             self.zobrazit_chybu()
 
+    # ---- Výpočty ----
     def spocitat(self):
         if self.prvni_cislo is None or not self.zvolena_operace:
             return
@@ -157,6 +165,7 @@ class Kalkulacka:
         except (ValueError, KeyError):
             self.zobrazit_chybu()
 
+    # ---- Výsledek a historie ----
     def zpracovat_a_zobrazit_vysledek(self, vypocet, vysledek):
         vysledek = round(vysledek, self.desetinna_mista)
         if isinstance(vysledek, float) and vysledek.is_integer():
@@ -172,6 +181,7 @@ class Kalkulacka:
         self.historie.append(zaznam)
         uloz_vypocet(zaznam)
 
+    # ---- Okna historie a nastavení ----
     def zobrazit_historii(self):
         okno_historie = tk.Toplevel(self.okno)
 
@@ -288,11 +298,13 @@ class Kalkulacka:
         )
         tlacitko.pack(pady=20)
 
+    # ---- Chyby ----
     def zobrazit_chybu(self):
         self.vymazat_vse()
         self.displej.insert(0, "Chyba!")
 
 
+# ---- Spuštění aplikace ----
 if __name__ == "__main__":
     okno = tk.Tk()
     aplikace = Kalkulacka(okno)
