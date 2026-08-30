@@ -31,11 +31,12 @@ class Kalkulacka:
         
         self.desetinna_mista = nacti_nastaveni()
         self.historie = nacti_historii()
+        self.je_chyba = False
 
         self.okno.title("Kalkulačka v2.0.0")
         self.okno.geometry("350x530")
         self.okno.resizable(False, False)
-        
+
         # Horní lišta pro mini tlačítko historie a nastaveni
         self.horni_lista = tk.Frame(self.okno)
         self.horni_lista.pack(fill="x", padx=20, pady=(10, 0))
@@ -67,6 +68,19 @@ class Kalkulacka:
             pady=(5, 20),
             fill="x"
         )
+
+        # Dolní lišta pro mini tlačítko historie a nastaveni
+        self.dolni_lista = tk.Frame(self.okno)
+        self.dolni_lista.pack(fill="x", padx=20, pady=(0, 10))
+
+        self.btn_smazat_posledni = tk.Button(
+            self.dolni_lista,
+            text="⌫",
+            font=("Arial", 14),
+            command=self.smazat_posledni
+        )
+        self.btn_smazat_posledni.pack(side="right")
+
 
         self.ramecek_tlacitka = tk.Frame(self.okno)
         self.ramecek_tlacitka.pack(
@@ -110,7 +124,20 @@ class Kalkulacka:
     # ---- Zpracování vstupu ----
     # ---------------------------
     def pridat_cislo(self, cislo):
+        if self.je_chyba:
+            self.vymazat_displej()
+            self.je_chyba = False
+        
+        if cislo == "." and "." in self.displej.get():
+            return
+
         self.displej.insert(tk.END, cislo)
+
+    def smazat_posledni(self):
+        text = self.displej.get()
+
+        if text:
+            self.displej.delete(len(text) - 1, tk.END)
 
     def vymazat_displej(self):
         self.displej.delete(0, tk.END)
@@ -119,11 +146,16 @@ class Kalkulacka:
         self.vymazat_displej()
         self.prvni_cislo = None
         self.zvolena_operace = None
+        self.je_chyba = False
 
     def nacist_cislo(self):
         hodnota = float(self.displej.get())
-        return int(hodnota) if hodnota.is_integer() else hodnota
 
+        if hodnota.is_integer():
+            return int(hodnota)
+
+        return hodnota
+    
     def zvolit_operaci(self, operace):
         try:
             self.prvni_cislo = self.nacist_cislo()
@@ -326,6 +358,7 @@ class Kalkulacka:
     def zobrazit_chybu(self):
         self.vymazat_vse()
         self.displej.insert(0, "Chyba!")
+        self.je_chyba = True
 
 
 # ---------------------------
