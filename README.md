@@ -1,133 +1,95 @@
-# Python kalkulačka
+# Kalkulačka
 
-Jednoduchá konzolová kalkulačka vytvořená v Pythonu jako jeden z mých prvních praktických projektů.
+Jednoduchá desktopová kalkulačka vytvořená v jazyce **Python**.
 
-Projekt postupně rozšiřuji o nové funkce a používám ho zároveň k procvičování Pythonu, práce se soubory, JSON, Git a GitHubu.
+Kalkulačka podporuje základní i pokročilejší matematické operace, historii výpočtů, uživatelské nastavení a ovládání pomocí klávesnice.
 
 ## Funkce
 
-Kalkulačka aktuálně podporuje:
+* Grafické uživatelské rozhraní pomocí Tkinter
+* Sčítání, odčítání, násobení a dělení
+* Celočíselné dělení a zbytek po dělení
+* Mocniny a odmocniny
+* Faktoriál
+* Absolutní hodnota
+* Logaritmus
+* Historie výpočtů s možností vymazání
+* Nastavení počtu desetinných míst
+* Automatické ukládání historie a nastavení
+* Ovládání pomocí klávesnice
+* Podpora desetinné tečky i čárky
+* Ošetření chyb při výpočtech
 
-* ➕ sčítání
-* ➖ odčítání
-* ✖️ násobení
-* ➗ dělení
-* ^ mocninu
-* √ odmocninu
-* 📜 trvalou historii výpočtů
-* ⚙️ nastavení počtu desetinných míst
-* 💾 trvalé ukládání nastavení pomocí JSON
-* 🔄 opakované výpočty bez nutnosti restartovat program
-* ❌ ošetření neplatných vstupů a dělení nulou
+## Podporované operace
 
-## Použité technologie
+| Operace            | Symbol  |
+| ------------------ | ------- |
+| Sčítání            | `+`     |
+| Odčítání           | `-`     |
+| Násobení           | `*`     |
+| Dělení             | `/`     |
+| Celočíselné dělení | `//`    |
+| Zbytek po dělení   | `%`     |
+| Mocnina            | `^`     |
+| Odmocnina          | `√`     |
+| Faktoriál          | `!`     |
+| Absolutní hodnota  | `\|x\|` |
+| Logaritmus         | `log`   |
 
-* **Python 3**
-* `math` – matematické operace
-* `pathlib` – práce se soubory a cestami
-* `json` – ukládání konfigurace
-* Git
-* GitHub
-* Visual Studio Code
+## Ovládání klávesnicí
+
+Kromě tlačítek v grafickém rozhraní lze kalkulačku ovládat také pomocí klávesnice.
+
+* `0–9` – zadávání čísel
+* `+ - * / % ^` – matematické operace
+* `Enter` / `=` – výpočet
+* `Backspace` – smazání posledního znaku
+* `C`, `Delete`, `Escape` – vymazání
+* `R` – odmocnina
+* `A` – absolutní hodnota
+* `L` – logaritmus
+* `!` – faktoriál
 
 ## Struktura projektu
 
-```text
-python-kalkulacka/
-│
-├── main.py              # hlavní program
-├── history.txt          # historie výpočtů
-├── config.json          # nastavení kalkulačky
-└── README.md            # základní informace o projektu 
+```text id="g5p7bk"
+kalkulacka/
+├── main.py
+├── matematika.py
+├── historie.py
+├── nastaveni.py
+├── historie.txt
+├── nastaveni.txt
+└── README.md
 ```
+
+### Moduly
+
+* `main.py` – hlavní část aplikace a grafické rozhraní
+* `matematika.py` – matematické funkce
+* `historie.py` – ukládání, načítání a mazání historie
+* `nastaveni.py` – ukládání a načítání nastavení
+
+Soubory `historie.txt` a `nastaveni.txt` slouží k trvalému ukládání dat aplikace.
 
 ## Spuštění
 
-Ujisti se, že máš nainstalovaný Python 3.
+Požadavky:
 
-V terminálu přejdi do složky projektu a spusť:
+* Python 3
+* Tkinter
 
-```bash
+Aplikaci lze spustit příkazem:
+
+```bash id="v2xv4s"
 python main.py
 ```
 
-Případně ve Windows:
+## Verze
 
-```bash
-py main.py
-```
+Aktuální verze: **v2.0.0**
 
-## Ovládání
+## Technologie
 
-Po spuštění se zobrazí hlavní menu:
-
-```text
-=== KALKULAČKA ===
-+  Sčítání
--  Odčítání
-*  Násobení
-/  Dělení
-^  Mocnina
-r  Odmocnina
-h  Historie
-s  Nastavení
-q  Konec
-```
-
-### Nastavení
-
-Pomocí `s` lze změnit počet desetinných míst.
-
-Nastavení se uloží do:
-
-```text
-config.json
-```
-
-a při dalším spuštění se automaticky načte.
-
-### Historie
-
-Pomocí `h` lze zobrazit předchozí výpočty.
-
-Historie se ukládá do:
-
-```text
-history.txt
-```
-
-## Aktuální verze
-
-**v1.8.0 – Trvalé nastavení pomocí JSON**
-
-### Poslední změny
-
-* přidána konfigurace pomocí `config.json`
-* nastavení počtu desetinných míst se ukládá trvale
-* nastavení se automaticky načítá při spuštění programu
-* zachována historie výpočtů
-* zachováno zaokrouhlování výsledků
-
-## Plánované rozšíření
-
-Projekt budu postupně rozšiřovat. Mezi možné další funkce patří:
-
-* mazání historie
-* pokročilejší matematické operace
-* převody jednotek
-* lepší práce s chybami
-* oddělení programu do více modulů
-* testy jednotlivých funkcí
-* případně grafické uživatelské rozhraní
-
-## Dokumentace
-
-Podrobnější popis jednotlivých funkcí a částí programu najdeš v:
-
-**`DOCUMENTATION.md`**
-
-## 👨‍💻 Projekt
-
-Projekt vzniká jako praktické procvičování Pythonu a zároveň jako součást mého osobního vývoje v programování.
-
-Postupně ho rozšiřuji a jednotlivé větší změny verzuji pomocí Git a GitHubu.
+* Python
+* Tkinter
