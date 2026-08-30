@@ -174,8 +174,9 @@ class Kalkulacka:
 
     def zobrazit_historii(self):
         okno_historie = tk.Toplevel(self.okno)
+
         okno_historie.title("Historie výpočtů")
-        okno_historie.geometry("280x350")
+        okno_historie.geometry("300x400")
         okno_historie.resizable(False, False)
 
         scrollbar = tk.Scrollbar(okno_historie)
@@ -187,24 +188,51 @@ class Kalkulacka:
             yscrollcommand=scrollbar.set
         )
         listbox.pack(
-            padx=10, 
-            pady=10, 
-            fill="both", 
+            padx=10,
+            pady=10,
+            fill="both",
             expand=True
         )
+
         scrollbar.config(
             command=listbox.yview
         )
 
         if not self.historie:
             listbox.insert(
-                tk.END, "Historie je prázdná"
+                tk.END,
+                "Historie je prázdná"
             )
         else:
             for zaznam in self.historie:
                 listbox.insert(
-                    tk.END, zaznam
+                    tk.END,
+                    zaznam
                 )
+
+        def vymazat_historii():
+            smaz_historii()
+            self.historie.clear()
+
+            listbox.delete(
+                0,
+                tk.END
+            )
+
+            listbox.insert(
+                tk.END,
+                "Historie je prázdná"
+            )
+
+        btn_vymazat = tk.Button(
+            okno_historie,
+            text="Vymazat historii",
+            font=("Arial", 11),
+            command=vymazat_historii
+        )
+        btn_vymazat.pack(
+            pady=(0, 10)
+        )
 
     def zobrazit_nastaveni(self):
         okno_nastaveni = tk.Toplevel(self.okno)
