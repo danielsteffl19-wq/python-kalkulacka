@@ -4,8 +4,12 @@ from matematika import (
     secti, odecti, vynasob, vydel, cele_deleni, zbytek,
     mocnina, odmocnina, faktorial, absolutni_hodnota, logaritmus
 )
-from historie import nacti_historii, uloz_vypocet
-from nastaveni import nacti_nastaveni
+from historie import (
+    nacti_historii,
+    uloz_vypocet,
+    smaz_historii
+)
+from nastaveni import nacti_nastaveni, uloz_nastaveni
 
 
 class Kalkulacka:
@@ -18,8 +22,28 @@ class Kalkulacka:
         self.historie = nacti_historii()
 
         self.okno.title("Kalkulačka v2.0.0")
-        self.okno.geometry("350x500")
+        self.okno.geometry("350x530")
         self.okno.resizable(False, False)
+
+        # Horní lišta pro mini tlačítko historie
+        self.horni_lista = tk.Frame(self.okno)
+        self.horni_lista.pack(fill="x", padx=20, pady=(10, 0))
+
+        self.btn_historie = tk.Button(
+            self.horni_lista,
+            text="📜 Historie",
+            font=("Arial", 9),
+            command=self.zobrazit_historii
+        )
+        self.btn_historie.pack(side="right")
+
+        self.btn_nastaveni = tk.Button(
+            self.horni_lista,
+            text="⚙️ Nastavení",
+            font=("Arial", 9),
+            command=self.zobrazit_nastaveni
+        )
+        self.btn_nastaveni.pack(side="right", padx=(0, 10))
 
         self.displej = tk.Entry(
             self.okno,
@@ -29,7 +53,7 @@ class Kalkulacka:
 
         self.displej.pack(
             padx=20,
-            pady=20,
+            pady=(5, 20),
             fill="x"
         )
 
@@ -147,6 +171,94 @@ class Kalkulacka:
         zaznam = f"{vypocet} = {vysledek}"
         self.historie.append(zaznam)
         uloz_vypocet(zaznam)
+
+    def zobrazit_historii(self):
+        okno_historie = tk.Toplevel(self.okno)
+        okno_historie.title("Historie výpočtů")
+        okno_historie.geometry("280x350")
+        okno_historie.resizable(False, False)
+
+        scrollbar = tk.Scrollbar(okno_historie)
+        scrollbar.pack(side="right", fill="y")
+
+        listbox = tk.Listbox(
+            okno_historie,
+            font=("Arial", 11),
+            yscrollcommand=scrollbar.set
+        )
+        listbox.pack(
+            padx=10, 
+            pady=10, 
+            fill="both", 
+            expand=True
+        )
+        scrollbar.config(
+            command=listbox.yview
+        )
+
+        if not self.historie:
+            listbox.insert(
+                tk.END, "Historie je prázdná"
+            )
+        else:
+            for zaznam in self.historie:
+                listbox.insert(
+                    tk.END, zaznam
+                )
+
+    def zobrazit_nastaveni(self):
+        okno_nastaveni = tk.Toplevel(self.okno)
+
+        okno_nastaveni.title("Nastavení")
+        okno_nastaveni.geometry("300x200")
+        okno_nastaveni.resizable(False, False)
+
+        label = tk.Label(
+            okno_nastaveni,
+            text="Počet desetinných míst:",
+            font=("Arial", 12)
+        )
+        label.pack(pady=(20, 5))
+
+        desetinna_mista = tk.Entry(
+            okno_nastaveni,
+            font=("Arial", 12),
+            justify="center"
+        )
+        desetinna_mista.pack()
+
+        desetinna_mista.insert(
+            0,
+            str(self.desetinna_mista)
+        )
+
+        def ulozit():
+            try:
+                hodnota = int(desetinna_mista.get())
+
+                if hodnota < 0:
+                    raise ValueError
+
+                self.desetinna_mista = hodnota
+                uloz_nastaveni(hodnota)
+
+                okno_nastaveni.destroy()
+
+            except ValueError:
+                chyba = tk.Label(
+                    okno_nastaveni,
+                    text="Zadej celé číslo 0 nebo větší!",
+                    font=("Arial", 9)
+                )
+                chyba.pack(pady=5)
+
+        tlacitko = tk.Button(
+            okno_nastaveni,
+            text="Uložit",
+            font=("Arial", 12),
+            command=ulozit
+        )
+        tlacitko.pack(pady=20)
 
     def zobrazit_chybu(self):
         self.vymazat_vse()
