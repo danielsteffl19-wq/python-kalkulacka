@@ -1,5 +1,10 @@
 import tkinter as tk
 
+from matematika import (
+    secti, odecti, vynasob, vydel, cele_deleni, zbytek,
+    mocnina, odmocnina, faktorial, absolutni_hodnota, logaritmus
+)
+
 
 class Kalkulacka:
     def __init__(self, okno):
@@ -35,12 +40,12 @@ class Kalkulacka:
 
     def vytvorit_tlacitka(self):
         tlacitka = [
-            [("7", lambda: self.pridat_cislo("7")), ("8", lambda: self.pridat_cislo("8")), ("9", lambda: self.pridat_cislo("9")), ("/", None)],
-            [("4", lambda: self.pridat_cislo("4")), ("5", lambda: self.pridat_cislo("5")), ("6", lambda: self.pridat_cislo("6")), ("*", None)],
-            [("1", lambda: self.pridat_cislo("1")), ("2", lambda: self.pridat_cislo("2")), ("3", lambda: self.pridat_cislo("3")), ("-", None)],
-            [("0", lambda: self.pridat_cislo("0")), (".", lambda: self.pridat_cislo(".")), ("C", self.vymazat_vse), ("+", None)],
-            [("//", None), ("%", None), ("^", None), ("log", None)],
-            [("√", None), ("!", None), ("|x|", None), ("=", None)]
+            [("7", lambda: self.pridat_cislo("7")), ("8", lambda: self.pridat_cislo("8")), ("9", lambda: self.pridat_cislo("9")), ("/", lambda: self.zvolit_operaci("/"))],
+            [("4", lambda: self.pridat_cislo("4")), ("5", lambda: self.pridat_cislo("5")), ("6", lambda: self.pridat_cislo("6")), ("*", lambda: self.zvolit_operaci("*"))],
+            [("1", lambda: self.pridat_cislo("1")), ("2", lambda: self.pridat_cislo("2")), ("3", lambda: self.pridat_cislo("3")), ("-", lambda: self.zvolit_operaci("-"))],
+            [("0", lambda: self.pridat_cislo("0")), (".", lambda: self.pridat_cislo(".")), ("C", self.vymazat_vse),                ("+", lambda: self.zvolit_operaci("+"))],
+            [("//", lambda: self.zvolit_operaci("//")), ("%", lambda: self.zvolit_operaci("%")), ("^", lambda: self.zvolit_operaci("^")), ("log", lambda: self.zvolit_operaci("log"))],
+            [("√", lambda: self.jednoducha_operace("√")), ("!", lambda: self.jednoducha_operace("!")), ("|x|", lambda: self.jednoducha_operace("|x|")), ("=", self.spocitat)]
         ]
 
         for radek_idx, radek in enumerate(tlacitka):
@@ -68,6 +73,68 @@ class Kalkulacka:
         self.vymazat_displej()
         self.prvni_cislo = None
         self.zvolena_operace = None
+
+    def nacist_cislo(self):
+        hodnota = float(self.displej.get())
+        return int(hodnota) if hodnota.is_integer() else hodnota
+
+    def zvolit_operaci(self, operace):
+        try:
+            self.prvni_cislo = self.nacist_cislo()
+            self.zvolena_operace = operace
+            self.vymazat_displej()
+        except ValueError:
+            self.zobrazit_chybu()
+
+    def spocitat(self):
+        if self.prvni_cislo is None or not self.zvolena_operace:
+            return
+
+        operace_mapa = {
+            "+": secti, "-": odecti, "*": vynasob, "/": vydel,
+            "//": cele_deleni, "%": zbytek, "^": mocnina, "log": logaritmus
+        }
+
+        try:
+            druhe_cislo = self.nacist_cislo()
+            funkce = operace_mapa[self.zvolena_operace]
+            vysledek = funkce(self.prvni_cislo, druhe_cislo)
+
+            if self.zvolena_operace == "log":
+                vypocet = f"log_{druhe_cislo}({self.prvni_cislo})"
+            else:
+                vypocet = f"{self.prvni_cislo} {self.zvolena_operace} {druhe_cislo}"
+
+            self.zobrazit_vysledek(vypocet, vysledek)
+
+        except (ValueError, ZeroDivisionError, KeyError):
+            self.zobrazit_chybu()
+
+    def jednoducha_operace(self, operace):
+        mapa_operaci = {
+            "√": (odmocnina, lambda c: f"√{c}"),
+            "!": (faktorial, lambda c: f"{c}!"),
+            "|x|": (absolutni_hodnota, lambda c: f"|{c}|")
+        }
+
+        try:
+            cislo = self.nacist_cislo()
+            funkce, format_vypoctu = mapa_operaci[operace]
+            vysledek = funkce(cislo)
+            vypocet = format_vypoctu(cislo)
+            
+            self.zobrazit_vysledek(vypocet, vysledek)
+
+        except (ValueError, KeyError):
+            self.zobrazit_chybu()
+
+    def zobrazit_vysledek(self, vypocet, vysledek):
+        self.vymazat_vse()
+        self.displej.insert(0, str(vysledek))
+
+    def zobrazit_chybu(self):
+        self.vymazat_vse()
+        self.displej.insert(0, "Chyba!")
 
 
 if __name__ == "__main__":
