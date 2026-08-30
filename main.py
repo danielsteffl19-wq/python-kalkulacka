@@ -69,7 +69,10 @@ class Kalkulacka:
             fill="x"
         )
 
-        # Dolní lišta pro mini tlačítko historie a nastaveni
+        self.displej.bind("<KeyPress>", self.zpracovat_klavesu)
+        self.displej.focus_set()
+
+      
         self.dolni_lista = tk.Frame(self.okno)
         self.dolni_lista.pack(fill="x", padx=20, pady=(0, 10))
 
@@ -123,6 +126,71 @@ class Kalkulacka:
     # ---------------------------
     # ---- Zpracování vstupu ----
     # ---------------------------
+    def zpracovat_klavesu(self, event):
+        klavesa = event.char
+        kod_klavesy = event.keysym
+
+
+        if self.je_chyba:
+            self.vymazat_displej()
+            self.je_chyba = False
+
+        if klavesa.isdigit():
+            return
+
+
+        elif klavesa in [".", ","]:
+            if "." in self.displej.get():
+                return "break"
+            if klavesa == ",":
+                self.displej.insert(tk.END, ".")
+                return "break"
+            return
+
+
+        elif klavesa == "!":
+            if self.displej.get():
+                self.jednoducha_operace("!")
+            return "break"
+
+
+        elif klavesa in ["+", "-", "*", "/", "%", "^"]:
+            if self.displej.get():
+                self.zvolit_operaci(klavesa)
+            return "break"
+        
+        elif klavesa.lower() == "r":
+            if self.displej.get():
+                self.jednoducha_operace("√")
+            return "break"
+
+        elif klavesa.lower() == "a":
+            if self.displej.get():
+                self.jednoducha_operace("|x|")
+            return "break"
+
+        elif klavesa.lower() == "l":
+            if self.displej.get():
+                self.zvolit_operaci("log")
+            return "break"
+
+
+        elif kod_klavesy in ["Return", "KP_Enter"] or klavesa == "=":
+            self.spocitat()
+            return "break"
+
+  
+        elif kod_klavesy == "BackSpace":
+            self.smazat_posledni()
+            return "break"
+        elif kod_klavesy in ["Escape", "Delete"] or klavesa.lower() == "c":
+            self.vymazat_vse()
+            return "break"
+
+
+        else:
+            return "break"
+
     def pridat_cislo(self, cislo):
         if self.je_chyba:
             self.vymazat_displej()
