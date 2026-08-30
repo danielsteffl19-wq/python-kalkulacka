@@ -4,6 +4,8 @@ from matematika import (
     secti, odecti, vynasob, vydel, cele_deleni, zbytek,
     mocnina, odmocnina, faktorial, absolutni_hodnota, logaritmus
 )
+from historie import nacti_historii, uloz_vypocet
+from nastaveni import nacti_nastaveni
 
 
 class Kalkulacka:
@@ -11,6 +13,9 @@ class Kalkulacka:
         self.okno = okno
         self.prvni_cislo = None
         self.zvolena_operace = None
+        
+        self.desetinna_mista = nacti_nastaveni()
+        self.historie = nacti_historii()
 
         self.okno.title("Kalkulačka v2.0.0")
         self.okno.geometry("350x500")
@@ -105,7 +110,7 @@ class Kalkulacka:
             else:
                 vypocet = f"{self.prvni_cislo} {self.zvolena_operace} {druhe_cislo}"
 
-            self.zobrazit_vysledek(vypocet, vysledek)
+            self.zpracovat_a_zobrazit_vysledek(vypocet, vysledek)
 
         except (ValueError, ZeroDivisionError, KeyError):
             self.zobrazit_chybu()
@@ -123,14 +128,25 @@ class Kalkulacka:
             vysledek = funkce(cislo)
             vypocet = format_vypoctu(cislo)
             
-            self.zobrazit_vysledek(vypocet, vysledek)
+            self.zpracovat_a_zobrazit_vysledek(vypocet, vysledek)
 
         except (ValueError, KeyError):
             self.zobrazit_chybu()
 
-    def zobrazit_vysledek(self, vypocet, vysledek):
-        self.vymazat_vse()
+    def zpracovat_a_zobrazit_vysledek(self, vypocet, vysledek):
+        vysledek = round(vysledek, self.desetinna_mista)
+        if isinstance(vysledek, float) and vysledek.is_integer():
+            vysledek = int(vysledek)
+
+        self.vymazat_displej()
         self.displej.insert(0, str(vysledek))
+
+        self.prvni_cislo = None
+        self.zvolena_operace = None
+
+        zaznam = f"{vypocet} = {vysledek}"
+        self.historie.append(zaznam)
+        uloz_vypocet(zaznam)
 
     def zobrazit_chybu(self):
         self.vymazat_vse()
