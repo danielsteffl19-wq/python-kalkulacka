@@ -70,20 +70,7 @@ kalkulacka/
 * `historie.py` – ukládání, načítání a mazání historie
 * `nastaveni.py` – ukládání a načítání nastavení
 
-Soubory `historie.txt` a `nastaveni.txt` slouží k trvalému ukládání dat aplikace.
-
-## Spuštění
-
-Požadavky:
-
-* Python 3
-* Tkinter
-
-Aplikaci lze spustit příkazem:
-
-```bash id="v2xv4s"
-python main.py
-```
+Soubory `historie.txt` a `config.json` slouží k trvalému ukládání dat aplikace.
 
 ## Verze
 
